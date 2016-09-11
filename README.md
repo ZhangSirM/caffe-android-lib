@@ -33,8 +33,8 @@ Any comments, issues or PRs are welcomed.
 Thanks.
 
 ## TODO
-- [ ] integrate using CMake's ExternalProject
-- [ ] add IO dependency support (i.e., leveldb and hdf5)
+- [ ] Integrate using CMake's ExternalProject
+- [ ] Support HDF5
 - [ ] OpenCL support
 - [ ] CUDA suuport
 
