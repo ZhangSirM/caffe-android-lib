@@ -50,6 +50,6 @@ make clean
 make -j"${N_JOBS}"
 rm -rf "${INSTALL_DIR}"
 make install
-git clean -fd
+git clean -fd 2> /dev/null || true
 
 cd "${WD}"

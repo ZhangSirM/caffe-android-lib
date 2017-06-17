@@ -44,6 +44,6 @@ cmake -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON \
 make -j${N_JOBS}
 rm -rf "${INSTALL_DIR}/opencv"
 make install/strip
-git clean -fd
+git clean -fd 2> /dev/null || true
 
 cd "${WD}"

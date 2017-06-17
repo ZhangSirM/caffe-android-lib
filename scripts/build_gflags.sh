@@ -32,6 +32,6 @@ cmake -DCMAKE_TOOLCHAIN_FILE="${WD}/android-cmake/android.toolchain.cmake" \
 make -j${N_JOBS}
 rm -rf "${INSTALL_DIR}"
 make install/strip
-git clean -fd
+git clean -fd 2> /dev/null || true
 
 cd "${WD}"
