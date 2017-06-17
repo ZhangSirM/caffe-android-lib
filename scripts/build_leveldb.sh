@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+
 set -e
 
 if [ -z "$NDK_ROOT" ] && [ "$#" -eq 0 ]; then
@@ -17,22 +18,22 @@ INSTALL_DIR=${WD}/android_lib/leveldb
 N_JOBS=${N_JOBS:-4}
 
 if [ "${ANDROID_ABI}" = "armeabi-v7a-hard-softfp with NEON" ]; then
-	TOOLCHAIN_DIR=$TOOLCHAIN_DIR/armeabi-v7a
+    TOOLCHAIN_DIR=$TOOLCHAIN_DIR/armeabi-v7a
 elif [ "${ANDROID_ABI}" = "arm64-v8a"  ]; then
-	TOOLCHAIN_DIR=$TOOLCHAIN_DIR/arm64-v8a
+    TOOLCHAIN_DIR=$TOOLCHAIN_DIR/arm64-v8a
 elif [ "${ANDROID_ABI}" = "armeabi"  ]; then
-	TOOLCHAIN_DIR=$TOOLCHAIN_DIR/armeabi
+    TOOLCHAIN_DIR=$TOOLCHAIN_DIR/armeabi
 elif [ "${ANDROID_ABI}" = "x86"  ]; then
-	TOOLCHAIN_DIR=$TOOLCHAIN_DIR/x86
+    TOOLCHAIN_DIR=$TOOLCHAIN_DIR/x86
 elif [ "${ANDROID_ABI}" = "x86_64"  ]; then
-	TOOLCHAIN_DIR=$TOOLCHAIN_DIR/x86_64
+    TOOLCHAIN_DIR=$TOOLCHAIN_DIR/x86_64
 else
     echo "Error: not support $0 for ABI: ${ANDROID_ABI}"
     exit 1
 fi
 
 if [ ! -d "$TOOLCHAIN_DIR" ]; then
-	"$WD/scripts/make-toolchain.sh"
+    "$WD/scripts/make-toolchain.sh"
 fi
 
 cd "${LEVELDB_ROOT}"

@@ -1,8 +1,9 @@
 #!/usr/bin/env sh
+
 set -e
 
 if [ -z "$NDK_ROOT" ] && [ "$#" -eq 0 ]; then
-    echo 'Either $NDK_ROOT should be set or provided as argument'
+    echo "Either \$NDK_ROOT should be set or provided as argument"
     echo "e.g., 'export NDK_ROOT=/path/to/ndk' or"
     echo "      '${0} /path/to/ndk'"
     exit 1
@@ -11,7 +12,7 @@ else
 fi
 
 ANDROID_ABI=${ANDROID_ABI:-"armeabi-v7a with NEON"}
-WD=$(readlink -f "`dirname $0`/..")
+WD=$(readlink -f "$(dirname "$0")/..")
 N_JOBS=${N_JOBS:-4}
 CAFFE_ROOT=${WD}/caffe
 BUILD_DIR=${CAFFE_ROOT}/build
@@ -54,12 +55,12 @@ cmake -DCMAKE_TOOLCHAIN_FILE="${WD}/android-cmake/android.toolchain.cmake" \
       -DPROTOBUF_PROTOC_EXECUTABLE="${ANDROID_LIB_ROOT}/protobuf_host/bin/protoc" \
       -DPROTOBUF_INCLUDE_DIR="${PROTOBUF_ROOT}/include" \
       -DPROTOBUF_LIBRARY="${PROTOBUF_ROOT}/lib/libprotobuf.a" \
-	  -DSNAPPY_ROOT_DIR=${SNAPPY_ROOT_DIR} \
+      -DSNAPPY_ROOT_DIR="${SNAPPY_ROOT_DIR}" \
       -DCMAKE_INSTALL_PREFIX="${ANDROID_LIB_ROOT}/caffe" \
       ..
 
-make -j${N_JOBS}
+make -j"${N_JOBS}"
 rm -rf "${ANDROID_LIB_ROOT}/caffe"
-make install/strip
+make install
 
 cd "${WD}"

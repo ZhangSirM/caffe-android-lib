@@ -1,8 +1,9 @@
 #!/usr/bin/env sh
+
 set -e
 
 if [ -z "$NDK_ROOT" ] && [ "$#" -eq 0 ]; then
-    echo 'Either $NDK_ROOT should be set or provided as argument'
+    echo "Either \$NDK_ROOT should be set or provided as argument"
     echo "e.g., 'export NDK_ROOT=/path/to/ndk' or"
     echo "      '${0} /path/to/ndk'"
     exit 1
@@ -11,7 +12,7 @@ else
 fi
 
 ANDROID_ABI=${ANDROID_ABI:-"armeabi-v7a with NEON"}
-WD=$(readlink -f "`dirname $0`/..")
+WD=$(readlink -f "$(dirname "$0")/..")
 OPENCV_ROOT=${WD}/opencv
 BUILD_DIR=$OPENCV_ROOT/platforms/build_android
 INSTALL_DIR=${WD}/android_lib
@@ -41,7 +42,7 @@ cmake -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON \
       -DCMAKE_INSTALL_PREFIX="${INSTALL_DIR}/opencv" \
       ../..
 
-make -j${N_JOBS}
+make -j"${N_JOBS}"
 rm -rf "${INSTALL_DIR}/opencv"
 make install/strip
 git clean -fd 2> /dev/null || true

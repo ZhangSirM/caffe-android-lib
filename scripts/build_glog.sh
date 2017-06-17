@@ -1,8 +1,9 @@
 #!/usr/bin/env sh
+
 set -e
 
 if [ -z "$NDK_ROOT" ] && [ "$#" -eq 0 ]; then
-    echo 'Either $NDK_ROOT should be set or provided as argument'
+    echo "Either \$NDK_ROOT should be set or provided as argument"
     echo "e.g., 'export NDK_ROOT=/path/to/ndk' or"
     echo "      '${0} /path/to/ndk'"
     exit 1
@@ -11,7 +12,7 @@ else
 fi
 
 ANDROID_ABI=${ANDROID_ABI:-"armeabi-v7a with NEON"}
-WD=$(readlink -f "`dirname $0`/..")
+WD=$(readlink -f "$(dirname "$0")/..")
 GLOG_ROOT=${WD}/glog
 BUILD_DIR=${GLOG_ROOT}/build
 ANDROID_LIB_ROOT=${WD}/android_lib
@@ -32,7 +33,7 @@ cmake -DCMAKE_TOOLCHAIN_FILE="${WD}/android-cmake/android.toolchain.cmake" \
       -DCMAKE_INSTALL_PREFIX="${ANDROID_LIB_ROOT}/glog" \
       ..
 
-make -j${N_JOBS}
+make -j"${N_JOBS}"
 rm -rf "${ANDROID_LIB_ROOT}/glog"
 make install/strip
 

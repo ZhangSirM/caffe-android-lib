@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
+
 set -e
 
 if [ -z "$NDK_ROOT" ] && [ "$#" -eq 0 ]; then
-    echo "Either NDK_ROOT should be set or provided as argument"
+    echo "Either \$NDK_ROOT should be set or provided as argument"
     echo "e.g., 'export NDK_ROOT=/path/to/ndk' or"
     echo "      '${0} /path/to/ndk'"
     exit 1

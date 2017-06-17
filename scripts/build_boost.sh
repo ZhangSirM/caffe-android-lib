@@ -1,8 +1,9 @@
 #!/usr/bin/env sh
+
 set -e
 
 if [ -z "$NDK_ROOT" ] && [ "$#" -eq 0 ]; then
-    echo 'Either $NDK_ROOT should be set or provided as argument'
+    echo "Either \$NDK_ROOT should be set or provided as argument"
     echo "e.g., 'export NDK_ROOT=/path/to/ndk' or"
     echo "      '${0} /path/to/ndk'"
     exit 1
@@ -11,7 +12,7 @@ else
 fi
 
 ANDROID_ABI=${ANDROID_ABI:-"armeabi-v7a with NEON"}
-WD=$(readlink -f "`dirname $0`/..")
+WD=$(readlink -f "$(dirname "$0")/..")
 BOOST_ROOT=${WD}/boost
 BUILD_DIR=${BOOST_ROOT}/build
 INSTALL_DIR=${WD}/android_lib
@@ -33,7 +34,7 @@ cmake -DCMAKE_TOOLCHAIN_FILE="${WD}/android-cmake/android.toolchain.cmake" \
       -DCMAKE_INSTALL_PREFIX="${INSTALL_DIR}/boost" \
       ..
 
-make -j${N_JOBS}
+make -j"${N_JOBS}"
 rm -rf "${INSTALL_DIR}/boost"
 make install/strip
 

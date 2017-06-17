@@ -1,7 +1,8 @@
 #!/usr/bin/env sh
+
 set -e
 
-WD=$(readlink -f "`dirname $0`/..")
+WD=$(readlink -f "$(dirname "$0")/..")
 PROTOBUF_ROOT=${WD}/protobuf
 BUILD_DIR=${PROTOBUF_ROOT}/build_host
 INSTALL_DIR=${WD}/android_lib
@@ -20,7 +21,7 @@ cmake -DCMAKE_INSTALL_PREFIX="${INSTALL_DIR}/protobuf_host" \
       -Dprotobuf_BUILD_TESTS=OFF \
       ../cmake
 
-make -j${N_JOBS}
+make -j"${N_JOBS}"
 rm -rf "${INSTALL_DIR}/protobuf_host"
 make install/strip
 git clean -fd 2> /dev/null || true
