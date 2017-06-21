@@ -1,15 +1,11 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
-set -e
+set -eu
 
-if [ -z "$NDK_ROOT" ] && [ "$#" -eq 0 ]; then
-    echo "Either \$NDK_ROOT should be set or provided as argument"
-    echo "e.g., 'export NDK_ROOT=/path/to/ndk' or"
-    echo "      '${0} /path/to/ndk'"
-    exit 1
-else
-    NDK_ROOT="${1:-${NDK_ROOT}}"
-fi
+# shellcheck source=/dev/null
+. "$(dirname "$0")/../config.sh"
+
+LMDB_ROOT=${PROJECT_DIR}/lmdb/libraries/liblmdb
 
 case "$(uname -s)" in
     Darwin)
@@ -33,13 +29,6 @@ else
     BIT=x86
 fi
 
-WD=$(readlink -f "$(dirname "$0")/..")
-LMDB_ROOT=${WD}/lmdb/libraries/liblmdb
-INSTALL_DIR=${WD}/android_lib
-N_JOBS=${N_JOBS:-4}
-
-cd "${LMDB_ROOT}"
-
 case "$ANDROID_ABI" in
     armeabi*)
         TOOLCHAIN_DIR=$NDK_ROOT/toolchains/arm-linux-androideabi-4.9/prebuilt/${OS}-${BIT}/bin
@@ -62,10 +51,12 @@ case "$ANDROID_ABI" in
         AR=$TOOLCHAIN_DIR/x86_64-linux-android-ar
         ;;
     *)
-        echo "Error: not support LMDB for ABI: ${ANDROID_ABI}"
+        echo "Error: $0 is not supported for ABI: ${ANDROID_ABI}"
         exit 1
         ;;
 esac
+
+pushd "${LMDB_ROOT}"
 
 make clean
 make -j"${N_JOBS}" CC="${CC}" AR="${AR}" XCFLAGS="-DMDB_DSYNC=O_SYNC -DMDB_USE_ROBUST=0"
@@ -73,4 +64,4 @@ make -j"${N_JOBS}" CC="${CC}" AR="${AR}" XCFLAGS="-DMDB_DSYNC=O_SYNC -DMDB_USE_R
 rm -rf "$INSTALL_DIR/lmdb"
 make prefix="$INSTALL_DIR/lmdb" install
 
-cd "${WD}"
+popd

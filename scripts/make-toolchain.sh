@@ -1,18 +1,9 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
-set -e
+set -eu
 
-if [ -z "$NDK_ROOT" ] && [ "$#" -eq 0 ]; then
-    echo "Either \$NDK_ROOT should be set or provided as argument"
-    echo "e.g., 'export NDK_ROOT=/path/to/ndk' or"
-    echo "      '${0} /path/to/ndk'"
-    exit 1
-else
-    NDK_ROOT="${1:-${NDK_ROOT}}"
-fi
-
-WD=$(readlink -f "$(dirname "$0")/..")
-TOOLCHAIN_DIR=${WD}/toolchains
+# shellcheck source=/dev/null
+. "$(dirname "$0")/../config.sh"
 
 mkdir -p "$TOOLCHAIN_DIR"
 
@@ -32,7 +23,7 @@ elif [ "${ANDROID_ABI}" = "x86_64"  ]; then
     TOOLCHAIN=x86_64-4.9
     ABI=x86_64
 else
-    echo "Error: not support $0 for ABI: ${ANDROID_ABI}"
+    echo "Error: $0 is not supported for ABI: ${ANDROID_ABI}"
     exit 1
 fi
 

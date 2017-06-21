@@ -1,6 +1,8 @@
 *.tar.bz2
 *.tar.gz
-
+*.o
+*.o.d
+config.sh
 android_lib/*
 download/*
 boost/boost_?_??_0/

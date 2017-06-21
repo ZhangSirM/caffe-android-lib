@@ -1,14 +1,11 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
-set -e
+set -eu
 
-if [ -z "$NDK_ROOT" ] && [ "$#" -eq 0 ]; then
-    echo "Either \$NDK_ROOT should be set or provided as argument"
-    echo "e.g., 'export NDK_ROOT=/path/to/ndk' or"
-    echo "      '${0} /path/to/ndk'"exit 1
-else
-    NDK_ROOT="${1:-${NDK_ROOT}}"
-fi
+# shellcheck source=/dev/null
+. "$(dirname "$0")/../config.sh"
+
+OPENBLAS_ROOT=${PROJECT_DIR}/OpenBLAS
 
 case "$(uname -s)" in
     Darwin)
@@ -31,13 +28,6 @@ if [ "$(uname -m)" = "x86_64"  ]; then
 else
     BIT=x86
 fi
-
-WD=$(readlink -f "$(dirname "$0")/..")
-OPENBLAS_ROOT=${WD}/OpenBLAS
-INSTALL_DIR=${WD}/android_lib
-N_JOBS=${N_JOBS:-4}
-
-cd "${OPENBLAS_ROOT}"
 
 if [ "${ANDROID_ABI}" = "armeabi-v7a-hard-softfp with NEON" ]; then
     CROSS_SUFFIX=$NDK_ROOT/toolchains/arm-linux-androideabi-4.9/prebuilt/${OS}-${BIT}/bin/arm-linux-androideabi-
@@ -70,9 +60,11 @@ elif [ "${ANDROID_ABI}" = "x86_64"  ]; then
     TARGET=ATOM
     BINARY=64
 else
-    echo "Error: not support OpenBLAS for ABI: ${ANDROID_ABI}"
+    echo "Error: $0 is not supported for ABI: ${ANDROID_ABI}"
     exit 1
 fi
+
+pushd "${OPENBLAS_ROOT}"
 
 make clean
 make -j"${N_JOBS}" \
@@ -85,4 +77,4 @@ make -j"${N_JOBS}" \
 rm -rf "$INSTALL_DIR/openblas"
 make PREFIX="$INSTALL_DIR/openblas" install
 
-cd "${WD}"
+popd

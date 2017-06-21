@@ -1,12 +1,12 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
-set -e
+set -eu
 
-WD=$(readlink -f "$(dirname "$0")/..")
-PROTOBUF_ROOT=${WD}/protobuf
+# shellcheck source=/dev/null
+. "$(dirname "$0")/../config.sh"
+
+PROTOBUF_ROOT=${PROJECT_DIR}/protobuf
 BUILD_DIR=${PROTOBUF_ROOT}/build_host
-INSTALL_DIR=${WD}/android_lib
-N_JOBS=${N_JOBS:-4}
 
 if [ -f "${INSTALL_DIR}/protobuf_host/bin/protoc" ]; then
     echo "Found host protoc"
@@ -15,7 +15,7 @@ fi
 
 rm -rf "${BUILD_DIR}"
 mkdir -p "${BUILD_DIR}"
-cd "${BUILD_DIR}"
+pushd "${BUILD_DIR}"
 
 cmake -DCMAKE_INSTALL_PREFIX="${INSTALL_DIR}/protobuf_host" \
       -Dprotobuf_BUILD_TESTS=OFF \
@@ -26,4 +26,4 @@ rm -rf "${INSTALL_DIR}/protobuf_host"
 make install/strip
 git clean -fd 2> /dev/null || true
 
-cd "${WD}"
+popd
