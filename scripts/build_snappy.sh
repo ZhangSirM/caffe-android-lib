@@ -7,24 +7,7 @@ set -eu
 
 SNAPPY_ROOT=${PROJECT_DIR}/snappy
 
-if [ "${ANDROID_ABI}" = "armeabi-v7a-hard-softfp with NEON" ]; then
-    TOOLCHAIN_DIR=$TOOLCHAIN_DIR/armeabi-v7a
-elif [ "${ANDROID_ABI}" = "arm64-v8a"  ]; then
-    TOOLCHAIN_DIR=$TOOLCHAIN_DIR/arm64-v8a
-elif [ "${ANDROID_ABI}" = "armeabi"  ]; then
-    TOOLCHAIN_DIR=$TOOLCHAIN_DIR/armeabi
-elif [ "${ANDROID_ABI}" = "x86"  ]; then
-    TOOLCHAIN_DIR=$TOOLCHAIN_DIR/x86
-elif [ "${ANDROID_ABI}" = "x86_64"  ]; then
-    TOOLCHAIN_DIR=$TOOLCHAIN_DIR/x86_64
-else
-    echo "Error: $0 is not supported for ABI: ${ANDROID_ABI}"
-    exit 1
-fi
-
-if [ ! -d "$TOOLCHAIN_DIR" ]; then
-    "$PROJECT_DIR/scripts/make-toolchain.sh"
-fi
+"$PROJECT_DIR/scripts/make-toolchain.sh"
 
 pushd "${SNAPPY_ROOT}"
 

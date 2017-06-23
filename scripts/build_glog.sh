@@ -11,7 +11,7 @@ GFLAGS_HOME=${INSTALL_DIR}/gflags
 
 rm -rf "${BUILD_DIR}"
 mkdir -p "${BUILD_DIR}"
-cd "${BUILD_DIR}"
+pushd "${BUILD_DIR}"
 
 cmake -DCMAKE_TOOLCHAIN_FILE="${PROJECT_DIR}/android-cmake/android.toolchain.cmake" \
       -DANDROID_NDK="${NDK_ROOT}" \
@@ -27,4 +27,4 @@ make -j"${N_JOBS}"
 rm -rf "${INSTALL_DIR}/glog"
 make install/strip
 
-cd "${PROJECT_DIR}"
+popd

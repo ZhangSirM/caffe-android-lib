@@ -20,8 +20,6 @@ RUN curl -SL \
 
 COPY . /caffe-android-lib
 
-ENV NDK_ROOT=/opt/android-ndk-r11c \
-	N_JOBS=4 \
-	ANDROID_ABI=arm64-v8a
-
 WORKDIR /caffe-android-lib
+
+RUN cp config.sh.example config.sh
