@@ -9,13 +9,30 @@ Porting [caffe](https://github.com/BVLC/caffe) to android platform
 * Without support for some IO libs (leveldb and hdf5)
 
 ## Build
+
+### RECOMMENDED: Using Docker
+```sh
+git clone --recursive https://github.com/sh1r0/caffe-android-lib.git
+# build image
+docker build -t caffe-android-lib .
+# run a container for building your own caffe-android-lib, e.g.,
+docker run --rm --name caffe-android-builder \
+    -e ANDROID_ABI=x86_64 \
+    -e N_JOBS=2 \
+    -v $(pwd)/android_lib:/caffe-android-lib/android_lib \
+    caffe-android-lib ./build.sh
+```
+
+### Conventional
+
 Tested with Android NDK r11c and cmake 3.3.2 on Ubuntu 14.04
 
-```shell
+```sh
 git clone --recursive https://github.com/sh1r0/caffe-android-lib.git
 cd caffe-android-lib
-export ANDROID_ABI="arm64-v8a" # Optional, see the note below
-./build.sh <path/to/ndk>
+cp config.sh.example config.sh
+# Modify config.sh for your needs
+./build.sh
 ```
 
 ### NOTE: OpenBLAS
